@@ -1,10 +1,12 @@
-import './globals.css'
+export const revalidate = 10
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const { timestamp } = await fetch('http://localhost:3001/now').then(res => res.json())
+
   return (
     <html lang="en">
       {/*
@@ -12,7 +14,14 @@ export default function RootLayout({
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
       */}
       <head />
-      <body>{children}</body>
+      <body>
+        <header>
+          Current Time: {(new Date(timestamp)).toString()}
+        </header>
+        <main>
+          {children}
+        </main>
+      </body>
     </html>
   )
 }
